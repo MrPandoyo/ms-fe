@@ -177,7 +177,6 @@ function edit(id) {
     selectedMenuIds: menuIds,
   }
   dialog.value = true
-  console.log("record edit selectedMenuIds = ",menuIds)
 }
 
 async function submitForm() {
@@ -208,7 +207,6 @@ async function save() {
     roleId:record.value.roleId,
     menuIds:record.value.selectedMenuIds
   }
-  console.log("payload = ", payload)
   saveRoleMenu(payload).then(function (response) {
     alert("Data saved")
     fetchData()
