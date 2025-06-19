@@ -31,6 +31,7 @@ const routes = [
       },
       {
         path: '/master',
+        name: 'Data Master',
         children: [
           {
             path: '/master/menu',

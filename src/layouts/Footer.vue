@@ -1,16 +1,14 @@
 <template>
   <v-footer
     app
-    border
-    color="teal"
-    height="40"
-  >
+    color="white"
+    height="60" class="d-flex align-center justify-center ga-2 flex-wrap flex-grow-1 py-3">
 
-    <div
-      class="text-caption"
-      style="position: absolute; right: 16px"
-    >
-      &copy; {{ (new Date()).getFullYear() }} <span class="d-none d-sm-inline-block">Iqbal Pandoyo</span>
+    <div>
+      Copyright &copy; Listrique
+      {{ (new Date()).getFullYear() }}
+      &middot;
+      All right Reserved
     </div>
   </v-footer>
 </template>

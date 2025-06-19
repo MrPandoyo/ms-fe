@@ -3,33 +3,52 @@
     <v-main class="d-flex align-center justify-center" style="min-height: 100vh">
       <v-container fluid>
         <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
-            <v-card class="pa-4" elevation="10">
-              <v-card-title class="text-h6 text-center mb-4">Login</v-card-title>
-              <v-form ref="form">
+          <v-col cols="12" sm="8" md="3">
+            <v-card class="pa-5" elevation="5" rounded="xl">
+              <v-img class="pb-5" src="@/assets/logo_lq.png" :width="250"/>
+              <v-card-title class="text-h5 pl-0 pb-0 font-weight-bold">Hi, Welcome</v-card-title>
+              <v-card-subtitle class="pl-0">It's good to see you again</v-card-subtitle>
+
+              <v-form ref="form" class="pt-10">
+                <div class="text-subtitle-1 font-weight-bold">Username</div>
                 <v-text-field
                   v-model="username"
                   type="text"
-                  label="Username"
-                  prepend-icon="mdi-account"
+                  placeholder="Input username"
+                  density="compact"
+                  variant="outlined"
                   :rules="rules"
                 />
-                <v-text-field
-                  v-model="password"
-                  label="Password"
-                  type="password"
-                  prepend-icon="mdi-lock"
-                  :rules="rules"
-                />
-                <v-btn color="primary" type="button" block class="mt-4" @click="submitLogin" :loading="loading">Login
-                </v-btn>
+                <div class="text-subtitle-1 font-weight-bold">Password</div>
+                <v-text-field v-model="password" :rules="rules"
+                  :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                  :type="visible ? 'text' : 'password'"
+                  density="compact"
+                  placeholder="Input password"
+                  variant="outlined"
+                  @click:append-inner="visible = !visible"
+                ></v-text-field>
+
+                <div class="text-subtitle-1">
+                  Forgot your password?
+                  <a class=" text-blue" href="#" rel="noopener noreferrer" target="_blank">
+                    Click here
+                  </a>
+                </div>
+                <v-btn color="primary" type="button" block rounded="md" class="mt-4" @click="submitLogin" :loading="loading">Login</v-btn>
               </v-form>
+              <v-card-text class="text-center">
+                Don't have an account?
+                <a class="text-blue text-decoration-none" href="#" rel="noopener noreferrer" target="_blank">
+                  Register
+                </a>
+              </v-card-text>
             </v-card>
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
-            <v-card class="pa-4" elevation="10">
+          <v-col cols="12" sm="8" md="3">
+            <v-card class="pa-5" elevation="5" rounded="xl">
               available user :
               <v-table density="compact">
                 <thead>
@@ -62,15 +81,18 @@
         </v-row>
       </v-container>
     </v-main>
+    <Footer></Footer>
   </v-app>
 </template>
 
 <script setup>
 import {ref} from 'vue'
 import {useAuthenticationStore} from "@/stores/app.js";
+import Footer from "@/layouts/Footer.vue";
 
 const username = ref('')
 const password = ref('')
+const visible = ref(false)
 const loading = ref(false)
 const form = ref(null)
 const rules = [

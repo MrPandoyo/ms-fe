@@ -1,49 +1,84 @@
 <template>
   <v-container>
     <v-row>
+      <v-col cols="12 d-flex justify-end">
+        <v-btn
+          border
+          variant="outlined"
+          color="primary"
+          class="me-2 text-none"
+          prepend-icon="mdi-plus-circle-outline"
+          rounded="lg"
+          text="Add Child"
+          @click="add(false)"
+        />
+        <v-btn
+          border
+          color="primary"
+          class="me-2 text-none"
+          prepend-icon="mdi-plus-circle-outline"
+          rounded="lg"
+          text="Add Parent"
+          @click="add(true)"
+        />
+      </v-col>
       <v-col cols="12">
-        <v-sheet border rounded>
+        <v-sheet border rounded="lg" elevation="1">
+          <v-toolbar color="white" rounded="lg">
+            <v-toolbar-title class="font-weight-bold">
+              <v-icon color="medium-emphasis" icon="mdi-format-list-text" size="x-small" start/>
+              Master Menu
+            </v-toolbar-title>
+
+            <template v-slot:append>
+              <div class="d-flex ga-1">
+                <v-btn
+                  border
+                  class="me-1 text-none bg-grey-lighten-3"
+                  height="2.5rem"
+                  rounded="lg"
+                  text="Delete"/>
+                <v-btn
+                  border
+                  class="me-1 text-none bg-grey-lighten-3"
+                  height="2.5rem"
+                  rounded="lg">
+                  <v-icon icon="mdi-refresh"></v-icon>
+                </v-btn>
+                <v-text-field
+                  density="compact"
+                  variant="outlined"
+                  placeholder="Search data..."
+                  prepend-inner-icon="mdi-magnify"
+                  width="250"
+                  flat
+                  hide-details
+                  single-line
+                ></v-text-field>
+                <v-btn
+                  border
+                  class="me-1 text-none bg-grey-lighten-3"
+                  height="2.5rem"
+                  rounded="lg"
+                  text="Search"/>
+              </div>
+            </template>
+          </v-toolbar>
+
           <v-data-table
             :headers="headers"
-            :hide-default-footer="tableData.length < 11"
             :items="tableData"
             show-expand
             item-value="menuId"
           >
-            <template #top>
-              <v-toolbar flat>
-                <v-toolbar-title>
-                  <v-icon color="medium-emphasis" icon="mdi-book-multiple" size="x-small" start/>
-                  List Menu
-                </v-toolbar-title>
-
-                <v-btn
-                  border
-                  class="me-2 bg-teal"
-                  prepend-icon="mdi-plus"
-                  rounded="lg"
-                  text="Add Parent"
-                  @click="add(true)"
-                />
-                <v-btn
-                  border
-                  class="me-2 bg-teal"
-                  prepend-icon="mdi-plus"
-                  rounded="lg"
-                  text="Add Child"
-                  @click="add(false)"
-                />
-              </v-toolbar>
-            </template>
-
             <template v-slot:item.data-table-expand="{ internalItem, isExpanded, toggleExpand }">
               <v-btn
                 v-if="internalItem.raw.subMenu && internalItem.raw.subMenu.length > 0"
                 :icon="isExpanded(internalItem) ? 'mdi-minus-box-outline' : 'mdi-plus-box-outline'"
-                border
+                border="0"
                 rounded="lg"
-                size="small"
-                class="me-2 bg-grey"
+                size="2rem"
+                elevation="0"
                 @click="toggleExpand(internalItem)"
               ></v-btn>
             </template>
@@ -60,15 +95,16 @@
                       <template #item.data-table-expand="{ subMenu }"></template>
                       <template #item.status="{ item }">
                         <div class="d-flex ga-2 justify-center">
-                          <v-btn rounded="xl" readonly :color="item.status==='ACTIVE' ? 'green':'red'">{{ item.status }}</v-btn>
+                          <v-btn class="text-none" rounded="xl" variant="outlined" readonly :color="item.status==='ACTIVE' ? 'green':'red'">{{ item.status === 'ACTIVE' ? 'Active' : 'Non Active' }}</v-btn>
                         </div>
                       </template>
                       <template #item.actions="{ item }">
                         <div class="d-flex ga-2 justify-center">
                           <v-btn
                             border
-                            class="me-2 bg-yellow"
-                            prepend-icon="mdi-pencil"
+                            color="primary"
+                            class="text-none"
+                            prepend-icon="mdi-pencil-box-outline"
                             rounded="lg"
                             text="Edit"
                             @click="edit(item.menuId)"
@@ -83,7 +119,7 @@
 
             <template #item.status="{ item }">
               <div class="d-flex ga-2 justify-center">
-                <v-btn rounded="xl" readonly :color="item.status==='ACTIVE' ? 'green':'red'">{{ item.status }}</v-btn>
+                <v-btn class="text-none" rounded="xl" variant="outlined" readonly :color="item.status==='ACTIVE' ? 'green':'red'">{{ item.status === 'ACTIVE' ? 'Active' : 'Non Active' }}</v-btn>
               </div>
             </template>
 
@@ -91,13 +127,44 @@
               <div class="d-flex ga-2 justify-center">
                 <v-btn
                   border
-                  class="me-2 bg-yellow"
-                  prepend-icon="mdi-pencil"
+                  color="primary"
+                  class="text-none"
+                  prepend-icon="mdi-pencil-box-outline"
                   rounded="lg"
                   text="Edit"
                   @click="edit(item.menuId)"
                 />
               </div>
+            </template>
+
+            <template #bottom="{ page,itemsPerPage,pageCount }">
+              <v-divider></v-divider>
+
+              <v-toolbar color="white" rounded="lg" elevation="0" class="">
+                <v-toolbar-title style="font-size: 1rem">
+                  Showing {{ itemsPerPage * (page - 1) + 1 }} to {{ itemsPerPage * page }} of {{ pageCount * itemsPerPage }} entries
+                </v-toolbar-title>
+
+                <template v-slot:append>
+                  <div class="d-flex ga-1">
+                    <v-pagination
+                      :length="20"
+                      color="primary"
+                      size="2rem"
+                      :variant="'outlined'"
+                      :total-visible="5"
+                      class="mt-2"
+                    >
+                      <template v-slot:prev="{disabled}">
+                        <v-btn variant="text" icon="mdi-chevron-left" size="2rem" :disabled="disabled"></v-btn>
+                      </template>
+                      <template v-slot:next="{disabled}">
+                        <v-btn variant="text" icon="mdi-chevron-right" size="2rem" :disabled="disabled"></v-btn>
+                      </template>
+                    </v-pagination>
+                  </div>
+                </template>
+              </v-toolbar>
             </template>
 
             <template #no-data>
@@ -174,7 +241,7 @@ const headers = [
   {title: 'Menu Icon', key: 'menuIcon'},
   {title: 'Menu Url', key: 'menuUrl'},
   {title: 'Status', key: 'status', align: 'center'},
-  {title: 'Actions', key: 'actions', align: 'center', sortable: false},
+  {title: 'Action', key: 'actions', align: 'center', sortable: false},
 ]
 
 const statuses = [
@@ -284,6 +351,5 @@ async function save() {
 
 function remove(id) {
 }
-
 
 </script>

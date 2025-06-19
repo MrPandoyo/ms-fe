@@ -7,3 +7,8 @@
 <script setup>
   //
 </script>
+<style scoped>
+.v-application {
+  background-color: #FAFBFF;
+}
+</style>
