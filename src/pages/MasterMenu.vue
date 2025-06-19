@@ -175,45 +175,60 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialog" max-width="50%">
+    <v-dialog v-model="dialog" max-width="30%">
       <v-card>
+        <template #title>
+          <v-card-title class="d-flex justify-space-between align-center">
+            <div class="text-h5 text-medium-emphasis ps-2">
+              <v-icon :icon="isEditing ? 'mdi-pencil-box':'mdi-plus'"></v-icon>
+              {{ isEditing ? 'Edit' : 'Add' }} {{isParent ? 'Parent' : 'Child'}}
+            </div>
+
+            <v-btn
+              icon="mdi-close"
+              variant="text"
+              @click="dialog = false"
+            ></v-btn>
+          </v-card-title>
+          <v-divider class="mb-4"></v-divider>
+        </template>
+
         <template #text>
           <v-form ref="form">
             <v-row>
-              <v-col cols="12 text-h6">
-                Menu Form
-              </v-col>
               <v-col cols="12" v-if="!isParent">
                 <b>Menu Parent</b>
                 <SelectMenu v-model="record.parent" :rules="required" @update-value="updateParent"/>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12">
                 <b>Menu Name</b>
-                <v-text-field v-model="record.menuName" :rules="required"/>
+                <v-text-field v-model="record.menuName" :rules="required" variant="outlined" placeholder="Input"/>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12">
                 <b>Menu Code</b>
-                <v-text-field v-model="record.menuCode" :rules="required"/>
+                <v-text-field v-model="record.menuCode" :rules="required" variant="outlined" placeholder="Input"/>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12">
                 <b>Menu Icon</b>
-                <v-text-field v-model="record.menuIcon"/>
+                <v-text-field v-model="record.menuIcon" variant="outlined" placeholder="Input"/>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12">
                 <b>Menu Url</b>
-                <v-text-field v-model="record.menuUrl" :rules="required"/>
+                <v-text-field v-model="record.menuUrl" :rules="required" variant="outlined" placeholder="Input"/>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12">
                 <b>Menu Order</b>
-                <v-text-field type="number" v-model="record.menuOrder"/>
+                <v-text-field type="number" v-model="record.menuOrder" variant="outlined" placeholder="Input"/>
               </v-col>
-              <v-col cols="6">
+              <v-col cols="12">
                 <b>Status</b>
                 <v-select
                   v-model="record.status"
                   :items="statuses"
                   item-title="title"
                   item-value="value"
+                  placeholder="Pilih"
+                  variant="outlined"
                 ></v-select>
               </v-col>
             </v-row>
@@ -222,8 +237,8 @@
         <v-divider/>
 
         <v-card-actions class="bg-surface-light">
-          <v-btn text="Batal" variant="plain" @click="dialog = false"/>
-          <v-btn class="bg-teal" text="Simpan" @click="submitForm"/>
+          <v-btn text="Batal" variant="flat" color="grey" @click="dialog = false"/>
+          <v-btn color="primary" variant="flat" text="Simpan" @click="submitForm"/>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -8,6 +8,7 @@
     :disabled="loading || datas.length === 0"
     variant="outlined"
     density="comfortable"
+    placeholder="Pilih"
     hide-details="auto"
     clearable
     :return-object="returnObject"

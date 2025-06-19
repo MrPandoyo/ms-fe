@@ -86,12 +86,15 @@
           <!--         for nested menu -->
           <v-list-group
             v-else
+            color="primary"
             :value="menu.menuId">
             <template #activator="{ props }">
               <v-list-item
                 v-bind="props"
                 :title="menu.menuName"
                 :prepend-icon="menu.menuIcon"
+                color="primary"
+                variant="flat"
               ></v-list-item>
             </template>
 
@@ -102,6 +105,7 @@
               :title="subMenu.menuName"
               :value="subMenu.menuId"
               :to="subMenu.menuUrl"
+              color="primary"
               link
             ></v-list-item>
           </v-list-group>
